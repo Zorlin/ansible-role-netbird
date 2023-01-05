@@ -17,8 +17,8 @@
 
 - name: Dearmor the public key into the new binary format
   shell:
-   cmd: "cat /usr/local/src/netbird-wiretrustee-public.key | gpg --dearmor -o /etc/apt/trusted.gpg.d/wiretrustee.gpg"
-   creates: /etc/apt/trusted.gpg.d/wiretrustee.gpg
+    cmd: "cat /usr/local/src/netbird-wiretrustee-public.key | gpg --dearmor -o /etc/apt/trusted.gpg.d/wiretrustee.gpg"
+    creates: /etc/apt/trusted.gpg.d/wiretrustee.gpg
 
 - name: Install apt repository
   apt_repository:

@@ -1,38 +1,43 @@
-Role Name
-=========
+ansible-role-netbird
+====================
 
-A brief description of the role goes here.
+This is an Ansible role that installs [Netbird](https://netbird.io/) automatically, including registering nodes with Netbird with no user interaction needed.
 
 Requirements
 ------------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+* Ansible 2.10+ or later.
 
 Role Variables
 --------------
 
 A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
 
+* `netbird_setup_key` - A valid API key for registering nodes with Netbird.io. Required if `netbird_register` is set to "true" (default).
+* `netbird_register` - Defaults to "true"; determines whether or not Netbird will automatically register nodes. If set to "false", this role will simply install Netbird.
+
 Dependencies
 ------------
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+None.
 
 Example Playbook
 ----------------
 
 Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
+```
+---
+- name: Install Netbird
+  hosts: servers
+  
+  vars:
+    netbird_setup_key: "not-a-real-api-key"
 
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
+  roles:
+  - { role: zorlin.netbird }
+```
 
-License
--------
+Credits and License
+-------------------
 
-BSD
-
-Author Information
-------------------
-
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+Copyright (c) 2022 Benjamin Arntzen & Protocol Labs. Made available under the MIT License.
