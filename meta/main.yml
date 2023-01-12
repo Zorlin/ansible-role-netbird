@@ -1,5 +1,5 @@
 galaxy_info:
-  name: netbird
+  role_name: netbird
   author: Zorlin
   description: Installs and configures Netbird and optionally joins it to a network
   company: Protocol Labs
