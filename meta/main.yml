@@ -2,9 +2,9 @@ galaxy_info:
   role_name: netbird
   author: Zorlin
   description: Installs and configures Netbird and optionally joins it to a network
-  company: Protocol Labs
+  company: Raptors With Hats
 
-  min_ansible_version: 2.1
+  min_ansible_version: 2.12
 
   galaxy_tags: []
 
