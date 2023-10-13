@@ -4,7 +4,7 @@ galaxy_info:
   description: Installs and configures Netbird and optionally joins it to a network
   company: Raptors With Hats
 
-  min_ansible_version: 2.12
+  min_ansible_version: "2.12"
 
   galaxy_tags: []
 
