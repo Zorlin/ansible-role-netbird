@@ -9,22 +9,22 @@
 
 - name: Download the public key for Wiretrustee
   get_url:
-    url: https://pkgs.wiretrustee.com/debian/public.key
-    dest: /usr/local/src/netbird-wiretrustee-public.key
+    url: https://pkgs.netbird.io/debian/public.key 
+    dest: /usr/share/keyrings/netbird-archive-keyring.key
     owner: root
     group: root
     mode: 0755
 
 - name: Dearmor the public key into the new binary format
   shell:
-    cmd: "cat /usr/local/src/netbird-wiretrustee-public.key | gpg --dearmor -o /etc/apt/trusted.gpg.d/wiretrustee.gpg"
-    creates: /etc/apt/trusted.gpg.d/wiretrustee.gpg
+    cmd: "cat /usr/local/src/netbird-wiretrustee-public.key | gpg --dearmor -o /usr/share/keyrings/netbird-archive-keyring.gpg"
+    creates: /usr/share/keyrings/netbird-archive-keyring.gpg
 
 - name: Install apt repository
   apt_repository:
-    repo: deb https://pkgs.wiretrustee.com/debian stable main
+    repo: deb [signed-by=/usr/share/keyrings/netbird-archive-keyring.gpg] https://pkgs.netbird.io/debian stable main
     state: present
-    filename: netbird-wiretrustee
+    filename: netbird
 
 - name: Update apt cache
   apt:
@@ -40,9 +40,19 @@
     cmd: 'netbird status | grep "Daemon status"'
   register: netbird_status
   changed_when: false
+  ignore_errors: true
   when: netbird_register is true
 
 - name: Register Netbird peer
   shell:
     cmd: 'netbird up --setup-key {{ netbird_setup_key }}'
   when: "netbird_register is true and 'NeedsLogin' in netbird_status.stdout"
+
+- name: Remove old files
+  ansible.builtin.file:
+    path: '{{ item }}'
+    state: absent
+  loop:
+    - /etc/apt/sources.list.d/netbird-wiretrustee.list
+    - /usr/local/src/netbird-wiretrustee-public.key
+    - /etc/apt/trusted.gpg.d/wiretrustee.gpg
