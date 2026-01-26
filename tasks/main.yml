@@ -6,25 +6,17 @@
       - ca-certificates
       - curl
       - gnupg
+      - python3-debian
 
-- name: Download the public key for Wiretrustee
-  get_url:
-    url: https://pkgs.netbird.io/debian/public.key 
-    dest: /usr/share/keyrings/netbird-archive-keyring.key
-    owner: root
-    group: root
-    mode: 0755
-
-- name: Dearmor the public key into the new binary format
-  shell:
-    cmd: "cat /usr/local/src/netbird-wiretrustee-public.key | gpg --dearmor -o /usr/share/keyrings/netbird-archive-keyring.gpg"
-    creates: /usr/share/keyrings/netbird-archive-keyring.gpg
-
-- name: Install apt repository
-  apt_repository:
-    repo: deb [signed-by=/usr/share/keyrings/netbird-archive-keyring.gpg] https://pkgs.netbird.io/debian stable main
+- name: Setup APT Repo
+  ansible.builtin.deb822_repository:
+    name: netbird
     state: present
-    filename: netbird
+    types: deb
+    uris: https://pkgs.netbird.io/debian
+    suites: stable
+    components: main
+    signed_by: https://pkgs.netbird.io/debian/public.key
 
 - name: Update apt cache
   apt:
@@ -45,14 +37,5 @@
 
 - name: Register Netbird peer
   shell:
-    cmd: 'netbird up --setup-key {{ netbird_setup_key }}'
+    cmd: 'netbird up --management-url {{ netbird_mgmt_url }} --setup-key {{ netbird_setup_key }} '
   when: "netbird_register is true and 'NeedsLogin' in netbird_status.stdout"
-
-- name: Remove old files
-  ansible.builtin.file:
-    path: '{{ item }}'
-    state: absent
-  loop:
-    - /etc/apt/sources.list.d/netbird-wiretrustee.list
-    - /usr/local/src/netbird-wiretrustee-public.key
-    - /etc/apt/trusted.gpg.d/wiretrustee.gpg
