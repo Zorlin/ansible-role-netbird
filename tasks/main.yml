@@ -38,4 +38,4 @@
 - name: Register Netbird peer
   shell:
     cmd: 'netbird up --management-url {{ netbird_mgmt_url }} --setup-key {{ netbird_setup_key }} '
-  when: "netbird_register is true and 'NeedsLogin' in netbird_status.stdout"
+  when: "netbird_register is true and ( 'NeedsLogin' in netbird_status.stdout or 'LoginFailed' in netbird_status.stdout ) "
