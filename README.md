@@ -3,6 +3,10 @@ ansible-role-netbird
 
 This is an Ansible role that installs [Netbird](https://netbird.io/) automatically, including registering nodes with Netbird with no user interaction needed.
 
+Maintenance status
+------------------
+🚧 Looking for maintainers. If you would like to maintain this repo, open an issue!
+
 Requirements
 ------------
 
