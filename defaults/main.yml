@@ -1,3 +1,4 @@
 ---
 # defaults file for ansible-role-netbird
 netbird_register: true
+netbird_mgmt_url: 'https://app.netbird.io:443/'
